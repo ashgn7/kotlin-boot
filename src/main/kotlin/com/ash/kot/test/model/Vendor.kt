@@ -7,9 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class Vendor(
     @Id
     var id: String,
-    var name: String,
-    var displayName: String,
-    var description: String,
-    var customerId: String = "",
-    var multiplier: Int
+    var name: String? = "",
+    var displayName: String? = "",
+    var description: String? = "",
+    var customerId: String? = "",
+    var multiplier: Double
 )

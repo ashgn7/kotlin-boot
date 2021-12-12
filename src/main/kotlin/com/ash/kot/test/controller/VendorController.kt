@@ -1,13 +1,12 @@
 package com.ash.kot.test.controller
 
 import com.ash.kot.test.model.Vendor
+import com.ash.kot.test.model.VendorRequest
 import com.ash.kot.test.service.VendorService
-import lombok.extern.slf4j.Slf4j
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
+import org.bson.types.ObjectId
+import org.springframework.web.bind.annotation.*
 
 @RestController
-@Slf4j
 class VendorController(val vendorService: VendorService) {
 
     @GetMapping("/list_vendors")
@@ -16,5 +15,18 @@ class VendorController(val vendorService: VendorService) {
         return vendorService.getAllVendors()
     }
 
+    @GetMapping("/get/{id}")
+    fun getVendorById(@PathVariable("id") id: String): Vendor? {
+        if (ObjectId.isValid(id)) {
+            val objectId = ObjectId(id)
+            val findByVendorId = vendorService.findByVendorId(objectId)
+            if (findByVendorId.isPresent) return findByVendorId.get()
+        }
+        return null
+    }
+
+    @PostMapping("create_vendor")
+    fun createVendor(@RequestBody payload: VendorRequest) : Vendor =
+        vendorService.createVendor(payload)
 
 }
